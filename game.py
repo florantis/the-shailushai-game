@@ -111,13 +111,14 @@ while True:
 
 # When the game ends:
 bg = pygame.transform.scale(pygame.image.load("assets/sprites/bg/winbg.png"), config.SIZE)
-time = f"{time.localtime(end_time - start_time).tm_sec} seconds"
+fin_time = time.localtime(end_time - start_time)
+fin_time = f"{fin_time.tm_min} minutes, {fin_time.tm_sec} seconds"
 pygame.mixer_music.play(-1)
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
     screen.blit(bg, bg.get_rect())
-    screen.blit(pygame.font.Font.render(gamefont, f"YOU WON! Time taken: {time}", 1, (0, 0, 250)), (config.SIZE[0] // 3, 0))
+    screen.blit(pygame.font.Font.render(gamefont, f"YOU WON! Time taken: {fin_time}", 1, (0, 0, 250)), (config.SIZE[0] // 4, 0))
     pygame.display.flip()
 
 
