@@ -113,6 +113,8 @@ while True:
 bg = pygame.transform.scale(pygame.image.load("assets/sprites/bg/winbg.png"), config.SIZE)
 fin_time = time.localtime(end_time - start_time)
 fin_time = f"{fin_time.tm_min} minutes, {fin_time.tm_sec} seconds"
+fin_time = time.localtime(end_time - start_time)
+fin_time = f"{fin_time.tm_min} minutes, {fin_time.tm_sec} seconds"
 pygame.mixer_music.play(-1)
 while True:
     for event in pygame.event.get():
