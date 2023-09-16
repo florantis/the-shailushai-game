@@ -1,6 +1,7 @@
 import pygame, sys, random
 import config
 import time
+from classes import Player, Entity
 
 # Booting up the game
 pygame.init()
@@ -13,6 +14,9 @@ screen = pygame.display.set_mode(config.SIZE)
 clock = pygame.time.Clock()
 gamefont = pygame.font.SysFont("Arial", 24)
 
+"""
+LEVEL 1
+"""
 # Setting up the game
 eat_sound = pygame.mixer.Sound("assets/sounds/sfx/eat.mp3")
 pygame.mixer.music.load("assets/sounds/music/main.mp3")
@@ -20,107 +24,176 @@ pygame.mixer.music.set_volume(0.2)
 bg = pygame.transform.scale(pygame.image.load("assets/sprites/bg/bg1.jpg"), config.SIZE)
 scale = 0.1
 vel = 4
+music_on = True
 
-player = pygame.transform.scale_by(player_fs, scale)
-player_rect = player.get_rect()
-player_rect = player_rect.move(config.SIZE[0] // 2 - player_rect.centerx, config.SIZE[1] // 2 - player_rect.centery)
+# player = pygame.transform.scale_by(player_fs, scale)
+# player_rect = player.get_rect()
+# player_rect = player_rect.move(config.SIZE[0] // 2 - player_rect.centerx, config.SIZE[1] // 2 - player_rect.centery)
 
+# score = 0
+# snails = []
+
+# # The game starts
+# start_time = time.time()
+# pygame.mixer.music.play(-1)
+# player_looks_left = True
+# while True:
+#     clock.tick(60)
+
+#     keys = pygame.key.get_pressed()
+
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT: sys.exit()
+
+#         if event.type == pygame.KEYDOWN:
+
+#             if event.key == pygame.K_m:
+#                 if music_on:
+#                     # pygame.mixer.music.set_volume(0)
+#                     pygame.mixer.music.pause()
+#                     music_on = False
+#                 else:
+#                     # pygame.mixer.music.set_volume(0.2)
+#                     pygame.mixer.music.unpause()
+#                     music_on = True
+
+#             if event.key == pygame.K_LEFT and not player_looks_left:
+#                 player = pygame.transform.flip(player, True, False)
+#                 player_looks_left == True
+
+#             if event.key == pygame.K_RIGHT and player_looks_left:
+#                 player = pygame.transform.flip(player, True, False)
+#                 player_looks_left = False
+
+#     # Read controls
+#     if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+#         player_rect = player_rect.move(-vel, 0)
+#     if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+#         player_rect = player_rect.move(vel, 0)
+#     if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+#         player_rect = player_rect.move(0, vel)
+#     if keys[pygame.K_UP] or keys[pygame.K_w]:
+#         player_rect = player_rect.move(0, -vel)
+
+#     # Add snails if none
+#     if not snails:
+#         posx, posy = random.random() * config.SIZE[0], random.random() * config.SIZE[1]
+#         path = "assets/sprites/snails/snail"
+#         is_golden_snail = True if random.random() < 0.05 else False
+
+#         if is_golden_snail:
+#             path += "gold.png"
+#         else:
+#             path += f"{random.randint(1, 5)}.png"
+
+#         snail = pygame.transform.scale_by(pygame.image.load(path), 0.2)
+#         snail_rect = snail.get_rect()
+#         snail_rect.x, snail_rect.y = posx, posy
+
+#         snails.append([snail, snail_rect, is_golden_snail])
+
+#     # Check if there is a collision with snails
+#     collide = player_rect.collidelist([snail[1] for snail in snails])
+#     if collide >= 0:
+#             popped_snail = snails.pop(collide)
+#             score += 1 + 4 * popped_snail[2]
+#             eat_sound.play()
+#             # Increase the size of a player
+#             scale *= (1.025 + 0.1 * popped_snail[2])
+#             player = pygame.transform.scale_by(player_fs, scale)
+#             # Preserve the position
+#             posx, posy = player_rect.x, player_rect.y
+#             player_rect = player.get_rect()
+#             player_rect.x, player_rect.y = posx, posy
+
+#     # We check if the game ended
+#     if score > 200:
+#         end_time = time.time()
+#         pygame.mixer.music.load("assets/sounds/music/win.mp3")
+#         break
+
+#     # Build the frame
+#     screen.blit(bg, bg.get_rect())
+#     screen.blit(pygame.font.Font.render(gamefont,
+#                                         f"Score: {score}",
+#                                         1,
+#                                         (min(175 + score, 255), max(100 - score, 0), max(200 - score, 0))),
+#                                         bg.get_rect())
+#     screen.blit(player, player_rect)
+#     for snail in snails:
+#         screen.blit(snail[0], snail[1])
+#     clock.tick()
+#     pygame.display.flip()
+
+# # When the game ends:
+# bg = pygame.transform.scale(pygame.image.load("assets/sprites/bg/winbg.png"), config.SIZE)
+# fin_time = time.localtime(end_time - start_time)
+# fin_time = f"{fin_time.tm_min} minutes, {fin_time.tm_sec} seconds"
+# fin_time = time.localtime(end_time - start_time)
+# fin_time = f"{fin_time.tm_min} minutes, {fin_time.tm_sec} seconds"
+# pygame.mixer_music.play(-1)
+# while True:
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT: sys.exit()
+
+#     if pygame.key.get_pressed()[pygame.K_SPACE]:
+#         break
+#     screen.blit(bg, bg.get_rect())
+#     screen.blit(pygame.font.Font.render(gamefont, f"YOU WON! Time taken: {fin_time}", 1, (0, 0, 250)), (config.SIZE[0] // 4, 0))
+#     pygame.display.flip()
+
+
+"""
+LEVEL 2
+"""
 score = 0
-snails = []
-
-# The game starts
-start_time = time.time()
-pygame.mixer.music.play(-1)
-player_looks_left = True
+background = pygame.transform.scale(pygame.image.load("assets/sprites/bg/bg2.jpg"), config.SIZE)
+player = Player("assets/sprites/player2.png")
+enemies: list[Entity] = []
+pygame.mixer_music.load("assets/sounds/music/war.mp3")
+pygame.mixer_music.play(-1)
 while True:
     clock.tick(60)
 
+    # Game controls etc.
     keys = pygame.key.get_pressed()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
 
         if event.type == pygame.KEYDOWN:
-            if keys[pygame.K_LEFT] and not player_looks_left:
-                player = pygame.transform.flip(player, True, False)
-                player_looks_left == True
 
-            if keys[pygame.K_RIGHT] and player_looks_left:
-                player = pygame.transform.flip(player, True, False)
-                player_looks_left = False
+            if event.key == pygame.K_m:
+                if music_on:
+                    pygame.mixer.music.pause()
+                    music_on == False
+                else:
+                    pygame.mixer.music.unpause()
+                    music_on == True
 
-    # Read controls
-    if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-        player_rect = player_rect.move(-vel, 0)
-    if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-        player_rect = player_rect.move(vel, 0)
-    if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-        player_rect = player_rect.move(0, vel)
-    if keys[pygame.K_UP] or keys[pygame.K_w]:
-        player_rect = player_rect.move(0, -vel)
+    player.input_controls(keys=keys)
 
-    # Add snails if none
-    if not snails:
-        posx, posy = random.random() * config.SIZE[0], random.random() * config.SIZE[1]
-        path = "assets/sprites/snails/snail"
-        is_golden_snail = True if random.random() < 0.05 else False
+    # Setting the chance for an enemy to spawn:
+    if random.random() < (1/60) / 2:
+        enemies.append(Entity("assets/sprites/enemy1.png", 0.07).random_spawn())
 
-        if is_golden_snail:
-            path += "gold.png"
-        else:
-            path += f"{random.randint(1, 5)}.png"
+    # Building the frame:
+    screen.blit(background, (0, 0))
 
-        snail = pygame.transform.scale_by(pygame.image.load(path), 0.2)
-        snail_rect = snail.get_rect()
-        snail_rect.x, snail_rect.y = posx, posy
+    for enm in enemies:
+        collides = enm.rect.collidelist([proj.rect for proj in player.projectiles])
+        if collides >= 0:
+            enemies.remove(enm)
+            score += 1
+            continue
+        enm.moveai(player.rect)
+        screen.blit(enm.image, enm.rect)
 
-        snails.append([snail, snail_rect, is_golden_snail])
+    for proj in player.projectiles:
+        screen.blit(proj.image, proj.rect)
 
-    # Check if there is a collision with snails
-    collide = player_rect.collidelist([snail[1] for snail in snails])
-    if collide >= 0:
-            popped_snail = snails.pop(collide)
-            score += 1 + 4 * popped_snail[2]
-            eat_sound.play()
-            # Increase the size of a player
-            scale *= (1.025 + 0.1 * popped_snail[2])
-            player = pygame.transform.scale_by(player_fs, scale)
-            # Preserve the position
-            posx, posy = player_rect.x, player_rect.y
-            player_rect = player.get_rect()
-            player_rect.x, player_rect.y = posx, posy
-
-    # We check if the game ended
-    if score > 200:
-        end_time = time.time()
-        pygame.mixer.music.load("assets/sounds/music/win.mp3")
-        break
-
-    # Build the frame
-    screen.blit(bg, bg.get_rect())
-    screen.blit(pygame.font.Font.render(gamefont,
-                                        f"Score: {score}",
-                                        1,
-                                        (min(175 + score, 255), max(100 - score, 0), max(200 - score, 0))),
-                                        bg.get_rect())
-    screen.blit(player, player_rect)
-    for snail in snails:
-        screen.blit(snail[0], snail[1])
-    clock.tick()
+    
+    screen.blit(pygame.font.Font.render(gamefont, f"Score: {score}", True, (250, 250, 250)), (0, 0))
+    screen.blit(player.image, player.rect)
     pygame.display.flip()
-
-# When the game ends:
-bg = pygame.transform.scale(pygame.image.load("assets/sprites/bg/winbg.png"), config.SIZE)
-fin_time = time.localtime(end_time - start_time)
-fin_time = f"{fin_time.tm_min} minutes, {fin_time.tm_sec} seconds"
-fin_time = time.localtime(end_time - start_time)
-fin_time = f"{fin_time.tm_min} minutes, {fin_time.tm_sec} seconds"
-pygame.mixer_music.play(-1)
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
-    screen.blit(bg, bg.get_rect())
-    screen.blit(pygame.font.Font.render(gamefont, f"YOU WON! Time taken: {fin_time}", 1, (0, 0, 250)), (config.SIZE[0] // 4, 0))
-    pygame.display.flip()
-
 
